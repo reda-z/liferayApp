@@ -27,6 +27,7 @@ import java.util.List;
 import zango.org.liferayapp.adapters.BookAdapter;
 import zango.org.liferayapp.models.Book;
 import zango.org.liferayapp.utils.ConstantsUtil;
+import zango.org.liferayapp.utils.FunctionUtil;
 import zango.org.liferayapp.utils.HttpManager;
 import zango.org.liferayapp.utils.URLs;
 
@@ -40,6 +41,8 @@ List<Book> books=new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_books);
         listbooks=(ListView)findViewById(R.id.list_books);
+
+        FunctionUtil.createGlobalNotification(this,"From Push !","Hello Friend!");
       //  Session session = new SessionImpl(ConstantsUtil.SERVER, new BasicAuthentication(ConstantsUtil.USERNAME, ConstantsUtil.PASSWORD));
         try {
           //  Push.with(SessionContext.createSessionFromCurrentSession()).register(this, "921393871558");
