@@ -24,6 +24,9 @@ import com.liferay.mobile.screens.util.LiferayLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import zango.org.liferayapp.BooksActivity;
+import zango.org.liferayapp.utils.FunctionUtil;
+
 /**
  * @author Javier Gamarra
  */
@@ -34,7 +37,9 @@ public class PushService extends AbstractPushService {
 	@Override
 	protected void processJSONNotification(final JSONObject json) throws JSONException {
 		System.out.println("Virtuoso Hello World !"+json);
-	//	createGlobalNotification(title, description, tryToLoadPhoto(photo));
+		FunctionUtil.createGlobalNotification(getApplicationContext(),"From Push !",json.toString());
+
+		//	createGlobalNotification(title, description, tryToLoadPhoto(photo));
 	}
 
 	/*private void createGlobalNotification(String title, String description, Bitmap bitmap) {

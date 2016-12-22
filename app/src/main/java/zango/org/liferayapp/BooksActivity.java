@@ -71,6 +71,8 @@ List<Book> books=new ArrayList<>();
                 @Override
                 public void onPushNotification(JSONObject pushNotification) {
                     System.out.println("I Got this message !"+pushNotification);
+                    FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",pushNotification.toString());
+
                 }
             });
         } catch (Exception e) {
@@ -89,6 +91,8 @@ List<Book> books=new ArrayList<>();
     @Override
     protected void onPushNotificationReceived(JSONObject jsonObject) {
         System.out.println("Virtuoso I got a message  here : "+jsonObject);
+        FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",jsonObject.toString());
+
 
     }
 
