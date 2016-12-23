@@ -46,7 +46,6 @@ dependencies {
 
     compile group: 'com.liferay.mobile', name: 'liferay-android-sdk', version: '6.2.0.+'
     compile 'com.liferay.mobile:liferay-screens:+'
-    compile 'com.liferay.mobile:liferay-push:1.0.7'
     testCompile 'junit:junit:4.12'
 
     //compile 'com.google.firebase:firebase-messaging:9.8.0'

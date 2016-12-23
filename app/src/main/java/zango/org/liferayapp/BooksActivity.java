@@ -42,13 +42,29 @@ List<Book> books=new ArrayList<>();
         setContentView(R.layout.activity_books);
         listbooks=(ListView)findViewById(R.id.list_books);
 
-        FunctionUtil.createGlobalNotification(this,"From Push !","Hello Friend!");
-      //  Session session = new SessionImpl(ConstantsUtil.SERVER, new BasicAuthentication(ConstantsUtil.USERNAME, ConstantsUtil.PASSWORD));
+
+        Session session = new SessionImpl(ConstantsUtil.SERVER, new BasicAuthentication(ConstantsUtil.USERNAME, ConstantsUtil.PASSWORD));
+
+        try {
+            Push.with(session).register(this, getString(R.string.sender_id));
+            Push.with(SessionContext.createSessionFromCurrentSession()).onPushNotification(new Push.OnPushNotification(){
+                @Override
+                public void onPushNotification(JSONObject pushNotification) {
+                    System.out.println("I Got this message !"+pushNotification);
+                    FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",pushNotification.toString());
+                }
+            });
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        };
+
+        //  Session session = new SessionImpl(ConstantsUtil.SERVER, new BasicAuthentication(ConstantsUtil.USERNAME, ConstantsUtil.PASSWORD));
         try {
           //  Push.with(SessionContext.createSessionFromCurrentSession()).register(this, "921393871558");
 
 
-            Push.with(SessionContext.createSessionFromCurrentSession())
+         /*   Push.with(SessionContext.createSessionFromCurrentSession())
                     .onSuccess(new Push.OnSuccess() {
 
                         @Override
@@ -74,7 +90,7 @@ List<Book> books=new ArrayList<>();
                     FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",pushNotification.toString());
 
                 }
-            });
+            });*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,6 +98,7 @@ List<Book> books=new ArrayList<>();
         new getBookTasks().execute(URLs.GET_ALL_BOOKS_URL);
 
     }
+
 
     @Override
     protected Session getDefaultSession() {
@@ -106,6 +123,7 @@ List<Book> books=new ArrayList<>();
     protected String getSenderId() {
         return getString(R.string.sender_id);
     }
+
 
     private class getBookTasks extends AsyncTask<String, String, String> {
 
