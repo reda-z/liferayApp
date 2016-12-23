@@ -31,7 +31,7 @@ import zango.org.liferayapp.utils.FunctionUtil;
 import zango.org.liferayapp.utils.HttpManager;
 import zango.org.liferayapp.utils.URLs;
 
-public class BooksActivity extends PushScreensActivity {
+public class BooksActivity extends AppCompatActivity {
 
 ListView listbooks;
 List<Book> books=new ArrayList<>();
@@ -43,88 +43,20 @@ List<Book> books=new ArrayList<>();
         listbooks=(ListView)findViewById(R.id.list_books);
 
 
-        Session session = new SessionImpl(ConstantsUtil.SERVER, new BasicAuthentication(ConstantsUtil.USERNAME, ConstantsUtil.PASSWORD));
-
+        // Get The session
+        Session session=SessionContext.createSessionFromCurrentSession();
         try {
+            //Register Device on portal
             Push.with(session).register(this, getString(R.string.sender_id));
-            Push.with(SessionContext.createSessionFromCurrentSession()).onPushNotification(new Push.OnPushNotification(){
-                @Override
-                public void onPushNotification(JSONObject pushNotification) {
-                    System.out.println("I Got this message !"+pushNotification);
-                    FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",pushNotification.toString());
-                }
-            });
         }
         catch (Exception e) {
             e.printStackTrace();
         };
 
-        //  Session session = new SessionImpl(ConstantsUtil.SERVER, new BasicAuthentication(ConstantsUtil.USERNAME, ConstantsUtil.PASSWORD));
-        try {
-          //  Push.with(SessionContext.createSessionFromCurrentSession()).register(this, "921393871558");
-
-
-         /*   Push.with(SessionContext.createSessionFromCurrentSession())
-                    .onSuccess(new Push.OnSuccess() {
-
-                        @Override
-                        public void onSuccess(JSONObject jsonObject) {
-                            System.out.println("Device was registered!");
-
-                        }
-                    })
-                    .onFailure(new Push.OnFailure() {
-
-                        @Override
-                        public void onFailure(Exception e) {
-                            System.out.println("Some error occurred!");
-                        }
-
-                    })
-                    .register(getString(R.string.sender_id));
-
-            Push.with(SessionContext.createSessionFromCurrentSession()).onPushNotification(new Push.OnPushNotification(){
-                @Override
-                public void onPushNotification(JSONObject pushNotification) {
-                    System.out.println("I Got this message !"+pushNotification);
-                    FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",pushNotification.toString());
-
-                }
-            });*/
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         new getBookTasks().execute(URLs.GET_ALL_BOOKS_URL);
 
     }
-
-
-    @Override
-    protected Session getDefaultSession() {
-        return SessionContext.createSessionFromCurrentSession();
-    }
-
-    @Override
-    protected void onPushNotificationReceived(JSONObject jsonObject) {
-        System.out.println("Virtuoso I got a message  here : "+jsonObject);
-        FunctionUtil.createGlobalNotification(BooksActivity.this,"From Push !",jsonObject.toString());
-
-
-    }
-
-    @Override
-    protected void onErrorRegisteringPush(String message, Exception e) {
-        System.out.println("Virtuoso Problem : "+message);
-        e.getStackTrace();
-    }
-
-    @Override
-    protected String getSenderId() {
-        return getString(R.string.sender_id);
-    }
-
-
+    // Task to get books
     private class getBookTasks extends AsyncTask<String, String, String> {
 
         @Override
